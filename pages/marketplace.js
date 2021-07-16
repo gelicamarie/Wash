@@ -10,8 +10,8 @@ export default function Marketplace({ nfts }) {
   );
 }
 
-export async function getStaticProps() {
-  const res = await fetch("http://localhost:3000/api/nfts");
+export async function getServerSideProps(context) {
+  const res = await fetch(`http://${context.req.headers.host}/api/nfts`);
   const data = await res.json();
 
   return {

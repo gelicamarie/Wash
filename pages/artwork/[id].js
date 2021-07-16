@@ -55,7 +55,9 @@ const Item = ({ nft }) => {
 };
 
 export async function getServerSideProps(context) {
-  const res = await fetch(`http://localhost:3000/api/nfts/${context.query.id}`);
+  const res = await fetch(
+    `http://${context.req.headers.host}/api/nfts/${context.query.id}`
+  );
   const data = await res.json();
   if (data?.error) {
     return { notFound: true };
