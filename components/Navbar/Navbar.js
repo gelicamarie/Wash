@@ -1,6 +1,6 @@
-import Wash from "../Wash";
 import Link from "next/link";
 
+import Wash from "../Wash";
 import {
   Nav,
   NavContainer,
