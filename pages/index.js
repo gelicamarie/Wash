@@ -1,8 +1,33 @@
 import Head from "next/head";
 import Navbar from "../components/Navbar/Navbar";
-import { Home, Header, Title, SubHeader } from "../styles/index.styles";
 import Art from "../components/Art/Art";
 import Grid from "../components/Grid/Grid";
+import styled from "styled-components";
+
+const Home = styled.div`
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  height: 80vh;
+  margin: auto;
+  align-items: center;
+`;
+const Header = styled.div`
+  flex-direction: column;
+`;
+const Title = styled.h1`
+  color: var(--color-theme-green-1);
+  font-size: 5rem;
+  margin-bottom: 0;
+  line-height: 6rem;
+`;
+
+const SubHeader = styled.p`
+  color: var(--color-theme-orange-1);
+  font-size: 1.5rem;
+  font-weight: 600;
+  margin-top: 0;
+`;
 
 export default function Wash({ nfts }) {
   return (

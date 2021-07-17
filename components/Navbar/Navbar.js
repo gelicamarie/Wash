@@ -18,8 +18,10 @@ const Navbar = () => {
       <div>
         <Nav>
           <NavContainer>
-            <NavLogo href="/">
-              <Logo />
+            <NavLogo href="/" passHref>
+              <a>
+                <Logo />
+              </a>
             </NavLogo>
 
             <Menu>
@@ -32,7 +34,7 @@ const Navbar = () => {
             </Menu>
           </NavContainer>
         </Nav>
-        <Line></Line>
+        <Line />
       </div>
     </>
   );
