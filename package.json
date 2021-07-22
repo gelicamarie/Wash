@@ -6,7 +6,9 @@
     "dev": "next dev",
     "build": "next build",
     "start": "yarn dev",
-    "lint": "next lint"
+    "lint": "next lint",
+    "compile": "hardhat compile",
+    "test:contracts": "hardhat test"
   },
   "dependencies": {
     "next": "11.0.1",
@@ -15,7 +17,13 @@
     "styled-components": "^5.3.0"
   },
   "devDependencies": {
+    "@nomiclabs/hardhat-truffle5": "^2.0.0",
+    "@nomiclabs/hardhat-web3": "^2.0.0",
+    "@openzeppelin/contracts": "^4.2.0",
+    "@openzeppelin/test-helpers": "^0.5.12",
     "eslint": "7.30.0",
-    "eslint-config-next": "11.0.1"
+    "eslint-config-next": "11.0.1",
+    "hardhat": "^2.5.0",
+    "web3": "^1.4.0"
   }
 }
