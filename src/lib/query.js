@@ -37,7 +37,7 @@ export const getCollection = async () => {
       return {
         id: i.tokenId.toNumber(),
         price,
-        owner: i.owner.slice(0,10),  // just for aesthetics
+        owner: i.owner.slice(0, 10), // just for aesthetics
         seller: i.seller,
         url: meta.image,
         title: meta.name,
@@ -47,4 +47,36 @@ export const getCollection = async () => {
   );
 
   return items;
+};
+
+/**
+ * Get artwork given a token ID
+ * @param {string} tokenId
+ */
+export const getArtwork = async (tokenId) => {
+
+  let artwork;
+  try {
+    artwork = await MARKETPLACE_CONTRACT.getArtwork(tokenId);
+  } catch (e) {
+    throw e;
+  }
+
+  const tokenURI = await NFT_CONTRACT.tokenURI(artwork.tokenId);
+
+  // Fetch nft data
+  const meta = await fetch(tokenURI).then((res) => res.json());
+
+  //converts price to ether
+  const price = ethers.utils.formatUnits(artwork.price.toString(), "ether");
+
+  return {
+    id: artwork.tokenId.toNumber(),
+    price,
+    owner: artwork.owner.slice(0, 10), // just for aesthetics
+    seller: artwork.seller,
+    url: meta.image,
+    title: meta.name,
+    description: meta.description,
+  };
 };

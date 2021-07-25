@@ -189,4 +189,18 @@ contract Marketplace is ReentrancyGuard {
 
         return inventory;
     }
+
+    function getArtwork(uint tokenId) public view returns (Item memory) {
+        uint256 totalCount = _itemIds.current();
+        uint256 index = 0;
+
+        for (uint256 i = 0; i < totalCount; i++) {
+            if (itemIdToCollection[i + 1].tokenId == tokenId) {
+                uint256 currId = itemIdToCollection[i + 1].itemId;
+                return itemIdToCollection[currId];
+            }
+            index++;
+        }
+        revert('Not found');
+    }
 }
