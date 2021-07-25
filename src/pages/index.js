@@ -7,7 +7,7 @@ import Art from "../components/Art/Art";
 import Grid from "../components/Grid/Grid";
 import styled from "styled-components";
 
-import { nftAddress, nftMarketAddress } from "./config.js";
+import { NFT_CONTRACT_ADDRESS, MARKET_CONTRACT_ADDRESS } from "../lib/config";
 //how ether clients interact with the contracts
 import NFT from "../../artifacts/contracts/NFT.sol/NFT.json";
 import MarketPlace from "../../artifacts/contracts/Marketplace.sol/Marketplace.json";
@@ -47,9 +47,9 @@ export default function Wash() {
 
   async function loadNFTs() {
     const provider = new ethers.providers.JsonRpcProvider();
-    const tokenContract = new ethers.Contract(nftAddress, NFT.abi, provider);
+    const tokenContract = new ethers.Contract(NFT_CONTRACT_ADDRESS, NFT.abi, provider);
     const marketPlaceContract = new ethers.Contract(
-      nftMarketAddress,
+      MARKET_CONTRACT_ADDRESS,
       MarketPlace.abi,
       provider
     );
