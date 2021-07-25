@@ -97,7 +97,7 @@ contract Marketplace is ReentrancyGuard {
         uint256 price = itemIdToCollection[itemId].price;
 
         require(
-            msg.value == price,
+            msg.value >= price,
             "The amount you entered is either more or less than the asking price. Please submit the right amount."
         );
 

@@ -18,7 +18,6 @@ const BuyButton = ({ nft }) => {
     const web3Modal = new Web3Modal(); // will look for the instance of the ethereum being injected to the web browser
     const connection = await web3Modal.connect();
     const provider = new ethers.providers.Web3Provider(connection);
-
     const signer = provider.getSigner();
 
     const contract = new ethers.Contract(
@@ -27,9 +26,12 @@ const BuyButton = ({ nft }) => {
       signer
     );
 
+    // console.log(await provider.getTransactionCount(MARKET_CONTRACT_ADDRESS));
+
     const transaction = await contract.createMarketTransaction(
       NFT_CONTRACT_ADDRESS,
-      nft.id
+      nft.id,
+      { value: ethers.utils.parseEther(nft.price) }
     );
 
     await transaction.wait();
