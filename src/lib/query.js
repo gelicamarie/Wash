@@ -11,12 +11,12 @@ export const ETHER_PROVIDER = new ethers.providers.JsonRpcProvider();
 export const NFT_CONTRACT = new ethers.Contract(
   NFT_CONTRACT_ADDRESS,
   NFT.abi,
-  ETHER_PROVIDER,
+  ETHER_PROVIDER
 );
 export const MARKETPLACE_CONTRACT = new ethers.Contract(
   MARKET_CONTRACT_ADDRESS,
   MarketPlace.abi,
-  ETHER_PROVIDER,
+  ETHER_PROVIDER
 );
 
 /**
@@ -37,13 +37,13 @@ export const getCollection = async () => {
       return {
         id: i.tokenId.toNumber(),
         price,
-        owner: i.owner.slice(0, 10), // just for aesthetics
-        seller: i.seller,
+        creator: i.owner.slice(0, 10), // just for aesthetics
+        owner: i.seller.slice(0, 10),
         url: meta.image,
         title: meta.name,
         description: meta.description,
       };
-    }),
+    })
   );
 
   return items;
@@ -54,7 +54,6 @@ export const getCollection = async () => {
  * @param {string} tokenId
  */
 export const getArtwork = async (tokenId) => {
-
   let artwork;
   try {
     artwork = await MARKETPLACE_CONTRACT.getArtwork(tokenId);
@@ -73,8 +72,8 @@ export const getArtwork = async (tokenId) => {
   return {
     id: artwork.tokenId.toNumber(),
     price,
-    owner: artwork.owner.slice(0, 10), // just for aesthetics
-    seller: artwork.seller,
+    creator: artwork.owner.slice(0, 10), // just for aesthetics
+    owner: artwork.seller.slice(0, 10),
     url: meta.image,
     title: meta.name,
     description: meta.description,
