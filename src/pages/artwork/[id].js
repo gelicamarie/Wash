@@ -1,9 +1,12 @@
-import Head from "next/head";
+import dynamic from "next/dynamic";
 import Image from "next/image";
 import Navbar from "../../components/Navbar/Navbar";
 import blurImage from "../../lib/blur-image";
 import styled from "styled-components";
 import { getArtwork } from "../../lib/query";
+const BuyButton = dynamic(() => import("../../components/BuyButton"), {
+  ssr: false,
+});
 
 const Line = styled.hr`
   margin: 0 0 1rem;
@@ -98,10 +101,9 @@ const Item = ({ nft }) => {
           <Line />
           <Description
             dangerouslySetInnerHTML={{ __html: nft.description }}
-          >
-          </Description>
+          ></Description>
           <Price>{nft.price} ETH</Price>
-          <BuyBtn>BUY</BuyBtn>
+          <BuyButton nft={nft} />
         </Info>
       </Container>
     </>

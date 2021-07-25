@@ -1,4 +1,3 @@
-import Web3Modal from "web3modal";
 import Head from "next/head";
 import Navbar from "../components/Navbar/Navbar";
 import Art from "../components/Art/Art";
@@ -33,31 +32,6 @@ const SubHeader = styled.p`
 `;
 
 export default function Wash({ nfts }) {
-  // async function buyNft(nft) {
-  //   const web3Modal = new Web3Modal(); //will look for the instance of the ethereum being injected to the web browser
-  //   const connection = await web3Modal.connect();
-  //   const provider = new ethers.providers.Web3Provider(connection);
-
-  //   const signer = provider.getSigner();
-  //   const contract = new ethers.Contract(
-  //     nftMarketAddress,
-  //     MarketPlace.abi,
-  //     signer,
-  //   );
-
-  //   const price = ethers.utils.parseUnits(nft.price.toString(), "ether");
-
-  //   const transaction = await contract.createMarketSale(
-  //     nftAddress,
-  //     nft.tokenId,
-  //     {
-  //       value: price,
-  //     },
-  //   );
-
-  //   await transaction.wait();
-  // }
-
   return (
     <div>
       <Head>
