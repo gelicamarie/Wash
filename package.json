@@ -10,7 +10,8 @@
     "compile": "hardhat compile",
     "test:contracts": "hardhat test",
     "start:hardhat": "hardhat node",
-    "deploy:local": "hardhat run scripts/deploy.js --network localhost"
+    "deploy:local": "hardhat run scripts/deploy.js --network localhost",
+    "seed": "node scripts/seed.js"
   },
   "dependencies": {
     "ipfs-http-client": "^50.1.2",

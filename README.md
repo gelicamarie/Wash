@@ -1,5 +1,11 @@
 This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
 
+## Running Locally
+
+1. `npm install` Install all dependencies
+2. In one terminal window start hardhat node using `npm run start:hardhat`
+3. In another terminal execute a setup script. `chmod +x setup.sh && ./setup.sh`
+
 ## Getting Started
 
 First, run the development server:
