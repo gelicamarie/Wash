@@ -1,8 +1,16 @@
+import { ethers } from "ethers";
+import Web3Modal from "web3modal";
+import { useEffect, useState } from "react";
 import Head from "next/head";
 import Navbar from "../components/Navbar/Navbar";
 import Art from "../components/Art/Art";
 import Grid from "../components/Grid/Grid";
 import styled from "styled-components";
+
+import { nftAddress, nftMarketAddress } from "./config.js";
+//how ether clients interact with the contracts
+import NFT from "../../artifacts/contracts/NFT.sol/NFT.json";
+import MarketPlace from "../../artifacts/contracts/Marketplace.sol/Marketplace.json";
 
 const Home = styled.div`
   display: flex;
@@ -29,7 +37,78 @@ const SubHeader = styled.p`
   margin-top: 0;
 `;
 
-export default function Wash({ nfts }) {
+export default function Wash() {
+  const [nfts, setNfts] = useState([]);
+  const [loadingState, setLoadingState] = useState("not-loaded");
+
+  useEffect(() => {
+    loadNFTs();
+  }, []);
+
+  async function loadNFTs() {
+    const provider = new ethers.providers.JsonRpcProvider();
+    const tokenContract = new ethers.Contract(nftAddress, NFT.abi, provider);
+    const marketPlaceContract = new ethers.Contract(
+      nftMarketAddress,
+      MarketPlace.abi,
+      provider
+    );
+
+    const inventory = await marketPlaceContract.getCollection();
+    const items = await Promise.all(
+      inventory.map(async (i) => {
+        const tokenURI = await tokenContract.tokenURI(i.tokenId);
+        const meta = fetch(tokenURI);
+        //const meta = await (fetch the data correlated to the tokenURI)
+
+        //converts price to ether
+        let price = ethers.utils.formatUnits(i.price.toString(), "ether");
+        let item = {
+          price,
+          tokenId: i.tokenId.toNumber(),
+          seller: i.seller,
+          owner: i.owner,
+          image: meta.data.image,
+          name: meta.data.name,
+          description: meta.data.description,
+        };
+
+        return item;
+      })
+    );
+
+    setNfts(items);
+    setLoadingState("loaded");
+  }
+
+  async function buyNft(nft) {
+    const web3Modal = new Web3Modal(); //will look for the instance of the ethereum being injected to the web browser
+    const connection = await web3Modal.connect();
+    const provider = new ethers.providers.Web3Provider(connection);
+
+    const signer = provider.getSigner();
+    const contract = new ethers.Contract(
+      nftMarketAddress,
+      MarketPlace.abi,
+      signer
+    );
+
+    const price = ethers.utils.parseUnits(nft.price.toString(), "ether");
+
+    const transaction = await contract.createMarketSale(
+      nftAddress,
+      nft.tokenId,
+      {
+        value: price,
+      }
+    );
+
+    await transaction.wait();
+    loadNFTs();
+  }
+  // if (loadingState === "loaded" && !nfts.length)
+  //   return <h1 className>Ooops, seems like the Marketplace is empty</h1>;
+
   return (
     <div>
       <Head>
@@ -59,7 +138,7 @@ export default function Wash({ nfts }) {
           />
         </Home>
         <h1>Discover.</h1>
-        <Grid data={nfts} />
+        {/* <Grid data={nfts} /> */}
       </main>
     </div>
   );

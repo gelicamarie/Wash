@@ -11,10 +11,13 @@
     "test:contracts": "hardhat test"
   },
   "dependencies": {
+    "ipfs-http-client": "^50.1.2",
     "next": "11.0.1",
     "react": "17.0.2",
     "react-dom": "17.0.2",
-    "styled-components": "^5.3.0"
+    "styled-components": "^5.3.0",
+    "web3": "^1.4.0",
+    "web3modal": "^1.9.3"
   },
   "devDependencies": {
     "@nomiclabs/hardhat-ethers": "^2.0.2",
@@ -28,7 +31,6 @@
     "eslint-config-next": "11.0.1",
     "ethereum-waffle": "^3.4.0",
     "ethers": "^5.4.2",
-    "hardhat": "^2.5.0",
-    "web3": "^1.4.0"
+    "hardhat": "^2.5.0"
   }
 }
