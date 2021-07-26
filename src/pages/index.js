@@ -53,7 +53,7 @@ export default function Wash({ nfts }) {
           <Art
             title="Green Art"
             url="/1.png"
-            owner="SaihajpreetSingh"
+            owner="0x123456"
             price={2.75}
             to="/artwork/7"
             width={550}
