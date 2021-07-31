@@ -1,5 +1,6 @@
 import styled from "styled-components";
 import Navbar from "../components/Navbar/Navbar";
+import Upload from "../components/Upload";
 
 const Hero = styled.div`
   display: flex;
@@ -41,6 +42,7 @@ const Input = styled.input`
   padding: 1rem 0 0.5rem 0;
   font-size: 1.1rem;
   font-weight: 500;
+  outline: none;
 `;
 
 const File = styled.input`
@@ -52,7 +54,7 @@ const Description = styled.textarea`
   background: transparent;
   color: var(--color-theme-green-2);
   border: 1.9px solid var(--color-theme-orange-0);
-  height: 30%;
+  height: 20%;
   padding: 0.5rem;
   font-size: 1rem;
   font-weight: 500;
@@ -61,6 +63,12 @@ const Description = styled.textarea`
     outline: none !important;
     border-color: var(--color-theme-orange-0);
   }
+`;
+
+const Photo = styled(Upload)`
+  margin: 0;
+  padding: 0;
+  width: 25rem;
 `;
 
 export const Button = styled.button`
@@ -85,6 +93,8 @@ export default function Create() {
         <Subheader>
           Upload your digital creations and sell them as token on Wash!
         </Subheader>
+        <Photo />
+        <input type="file" name="NFT"></input>
         <Container>
           <Input placeholder="Name"></Input>
           <Input placeholder="Price"></Input>
