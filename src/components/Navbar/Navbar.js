@@ -1,5 +1,5 @@
 import Link from "next/link";
-
+import dynamic from "next/dynamic";
 import Wash from "../Wash";
 import {
   Nav,
@@ -11,8 +11,14 @@ import {
   NavBtn,
   Line,
 } from "./Navbar.styles";
+import useMetaState from "../../lib/use-metastate";
+const ConnectButton = dynamic(() => import("../WalletButton"), {
+  ssr: false,
+});
 
 const Navbar = () => {
+  const { isConnected } = useMetaState();
+
   return (
     <>
       <div>
@@ -28,12 +34,12 @@ const Navbar = () => {
               <NavItem>
                 <Link href="/marketplace">Marketplace</Link>
               </NavItem>
-              <NavItem>
-                <Link href="/user">Profile</Link>
-              </NavItem>
-              <NavBtn>
-                <Link href="/create">Create NFT</Link>
-              </NavBtn>
+              {isConnected && (
+                <NavItem>
+                  <Link href="/user">Profile</Link>
+                </NavItem>
+              )}
+              <ConnectButton />
             </Menu>
           </NavContainer>
         </Nav>
