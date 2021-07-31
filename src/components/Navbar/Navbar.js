@@ -28,8 +28,11 @@ const Navbar = () => {
               <NavItem>
                 <Link href="/marketplace">Marketplace</Link>
               </NavItem>
+              <NavItem>
+                <Link href="/user">Profile</Link>
+              </NavItem>
               <NavBtn>
-                <Link href="#">Connect Wallet</Link>
+                <Link href="/create">Create NFT</Link>
               </NavBtn>
             </Menu>
           </NavContainer>
