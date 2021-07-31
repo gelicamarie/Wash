@@ -1,6 +1,8 @@
 import styled from "styled-components";
 import Navbar from "../../components/Navbar/Navbar";
 import Grid from "../../components/Grid/Grid";
+import { useMetamask } from "use-metamask";
+import useMetaState from "../../lib/use-metastate";
 
 const Hero = styled.div`
   display: flex;
@@ -32,12 +34,24 @@ const Button = styled.button`
 `;
 
 export default function User({ nfts }) {
-  console.log({ nfts });
+  const { account, isConnected } = useMetaState();
+
+  if (!isConnected) {
+    return (
+      <>
+        <Navbar></Navbar>
+        <Hero>
+          <h1>You must log in</h1>
+        </Hero>
+      </>
+    );
+  }
+
   return (
     <>
       <Navbar></Navbar>
       <Hero>
-        <Username>@0x000000</Username>
+        <Username>{account}</Username>
         <Container>
           <Button>Collection</Button>
           <Button>Creation</Button>

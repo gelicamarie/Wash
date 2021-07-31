@@ -1,6 +1,7 @@
 import styled from "styled-components";
 import Navbar from "../components/Navbar/Navbar";
 import Upload from "../components/Upload";
+import useMetaState from "../lib/use-metastate";
 
 const Hero = styled.div`
   display: flex;
@@ -85,6 +86,19 @@ export const Button = styled.button`
 `;
 
 export default function Create() {
+  const { isConnected } = useMetaState();
+
+  if (!isConnected) {
+    return (
+      <>
+        <Navbar></Navbar>
+        <Hero>
+          <h1>You must log in</h1>
+        </Hero>
+      </>
+    );
+  }
+
   return (
     <>
       <Navbar />
