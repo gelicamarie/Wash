@@ -3,6 +3,7 @@ import Navbar from "../../components/Navbar/Navbar";
 import Grid from "../../components/Grid/Grid";
 import { useMetamask } from "use-metamask";
 import useMetaState from "../../lib/use-metastate";
+import { getUserCollection } from "../../lib/query";
 
 const Hero = styled.div`
   display: flex;
@@ -63,10 +64,9 @@ export default function User({ nfts }) {
 }
 
 export async function getServerSideProps(context) {
-  const res = await fetch(`http://${context.req.headers.host}/api/nfts`);
-  const data = await res.json();
+  const items = await getUserCollection();
 
   return {
-    props: { nfts: data.data },
+    props: { nfts: items },
   };
 }

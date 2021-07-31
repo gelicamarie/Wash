@@ -37,8 +37,8 @@ export const getCollection = async () => {
       return {
         id: i.tokenId.toNumber(),
         price,
-        creator: i.owner.slice(0, 10), // just for aesthetics
-        owner: i.seller.slice(0, 10),
+        creator: i.seller.slice(0, 10), // just for aesthetics
+        owner: i.owner.slice(0, 10),
         url: meta.image,
         title: meta.name,
         description: meta.description,
@@ -72,10 +72,38 @@ export const getArtwork = async (tokenId) => {
   return {
     id: artwork.tokenId.toNumber(),
     price,
-    creator: artwork.owner.slice(0, 10), // just for aesthetics
-    owner: artwork.seller.slice(0, 10),
+    creator: artwork.seller.slice(0, 10), // just for aesthetics
+    owner: artwork.owner.slice(0, 10),
     url: meta.image,
     title: meta.name,
     description: meta.description,
   };
+};
+
+export const getUserCollection = async (userId) => {
+  const inventory = await MARKETPLACE_CONTRACT.getMyCollection();
+
+  const items = await Promise.all(
+    inventory.map(async (i) => {
+      const tokenURI = await NFT_CONTRACT.tokenURI(i.tokenId);
+
+      // Fetch nft data
+      const meta = await fetch(tokenURI).then((res) => res.json());
+
+      //converts price to ether
+      const price = ethers.utils.formatUnits(i.price.toString(), "ether");
+
+      return {
+        id: i.tokenId.toNumber(),
+        price,
+        creator: i.seller.slice(0, 10), // just for aesthetics
+        owner: i.owner.slice(0, 10),
+        url: meta.image,
+        title: meta.name,
+        description: meta.description,
+      };
+    })
+  );
+
+  return items;
 };
