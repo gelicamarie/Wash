@@ -1,20 +1,20 @@
 import Navbar from "../components/Navbar/Navbar";
 import Grid from "../components/Grid/Grid";
+import { getCollection } from "../lib/query";
 
 export default function Marketplace({ nfts }) {
   return (
     <>
       <Navbar></Navbar>
-      <Grid data={nfts}></Grid>;
+      <Grid data={nfts}></Grid>
     </>
   );
 }
 
-export async function getServerSideProps(context) {
-  const res = await fetch(`http://${context.req.headers.host}/api/nfts`);
-  const data = await res.json();
+export async function getServerSideProps() {
+  const items = await getCollection();
 
   return {
-    props: { nfts: data.data },
+    props: { nfts: items },
   };
 }

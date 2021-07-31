@@ -97,7 +97,7 @@ contract Marketplace is ReentrancyGuard {
         uint256 price = itemIdToCollection[itemId].price;
 
         require(
-            msg.value == price,
+            msg.value >= price,
             "The amount you entered is either more or less than the asking price. Please submit the right amount."
         );
 
@@ -188,5 +188,19 @@ contract Marketplace is ReentrancyGuard {
         }
 
         return inventory;
+    }
+
+    function getArtwork(uint tokenId) public view returns (Item memory) {
+        uint256 totalCount = _itemIds.current();
+        uint256 index = 0;
+
+        for (uint256 i = 0; i < totalCount; i++) {
+            if (itemIdToCollection[i + 1].tokenId == tokenId) {
+                uint256 currId = itemIdToCollection[i + 1].itemId;
+                return itemIdToCollection[currId];
+            }
+            index++;
+        }
+        revert('Not found');
     }
 }

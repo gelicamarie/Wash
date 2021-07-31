@@ -1,8 +1,12 @@
-import Head from "next/head";
+import dynamic from "next/dynamic";
 import Image from "next/image";
 import Navbar from "../../components/Navbar/Navbar";
 import blurImage from "../../lib/blur-image";
 import styled from "styled-components";
+import { getArtwork } from "../../lib/query";
+const BuyButton = dynamic(() => import("../../components/BuyButton"), {
+  ssr: false,
+});
 
 const Line = styled.hr`
   margin: 0 0 1rem;
@@ -87,7 +91,7 @@ const Item = ({ nft }) => {
           <Title>{nft.title}</Title>
           <Section>
             <User>Creator: {nft.creator}</User>
-            <User>Owner: @{nft.owner} </User>
+            <User>Owner: @{nft.owner}</User>
           </Section>
           <Section>
             <Menu>
@@ -99,7 +103,7 @@ const Item = ({ nft }) => {
             dangerouslySetInnerHTML={{ __html: nft.description }}
           ></Description>
           <Price>{nft.price} ETH</Price>
-          <BuyBtn>BUY</BuyBtn>
+          <BuyButton nft={nft} />
         </Info>
       </Container>
     </>
@@ -107,14 +111,14 @@ const Item = ({ nft }) => {
 };
 
 export async function getServerSideProps(context) {
-  const res = await fetch(
-    `http://${context.req.headers.host}/api/nfts/${context.query.id}`
-  );
-  const data = await res.json();
-  if (data?.error) {
+  let item;
+  try {
+    item = await getArtwork(context.query.id);
+  } catch (e) {
     return { notFound: true };
   }
-  return { props: { nft: data.data } };
+
+  return { props: { nft: item } };
 }
 
 export default Item;
