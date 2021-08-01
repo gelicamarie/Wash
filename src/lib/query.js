@@ -38,8 +38,8 @@ export const getCollection = async () => {
       return {
         id: i.tokenId.toNumber(),
         price,
-        creator: i.seller.slice(0, 10), // just for aesthetics
-        owner: i.owner.slice(0, 10),
+        creator: i.seller,
+        owner: i.owner,
         url: meta.image,
         title: meta.name,
         description: meta.description,
@@ -73,8 +73,8 @@ export const getArtwork = async (tokenId) => {
   return {
     id: artwork.tokenId.toNumber(),
     price,
-    creator: artwork.seller.slice(0, 10), // just for aesthetics
-    owner: artwork.owner.slice(0, 10),
+    creator: artwork.seller,
+    owner: artwork.owner,
     url: meta.image,
     title: meta.name,
     description: meta.description,
@@ -99,8 +99,8 @@ export const getUserCollection = async (userId) => {
       return {
         id: i.tokenId.toNumber(),
         price,
-        creator: i.seller.slice(0, 10), // just for aesthetics
-        owner: i.owner.slice(0, 10),
+        creator: i.seller,
+        owner: i.owner,
         url: meta.image,
         title: meta.name,
         description: meta.description,

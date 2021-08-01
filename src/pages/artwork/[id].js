@@ -4,7 +4,12 @@ import Navbar from "../../components/Navbar/Navbar";
 import blurImage from "../../lib/blur-image";
 import styled from "styled-components";
 import { getArtwork } from "../../lib/query";
+import useMetaState from "../../lib/use-metastate";
 const BuyButton = dynamic(() => import("../../components/BuyButton"), {
+  ssr: false,
+});
+
+const SellButton = dynamic(() => import("../../components/SellButton"), {
   ssr: false,
 });
 
@@ -63,16 +68,23 @@ const Price = styled.h3`
   font-size: 1.3rem;
 `;
 
-const BuyBtn = styled.button`
-  font-size: 1.2rem;
-  background-color: #606c38;
-  color: var(--color-theme-bg);
-  border: none;
-  border-radius: 50px;
-  padding: 1rem 4rem;
-`;
-
 const Item = ({ nft }) => {
+  const { account } = useMetaState();
+  const Btn = () => {
+    // if user is not logged in they can't buy
+    if (!account) return "Connect your wallet to buy";
+
+    // If you are the owner you sell
+    if (account && account.toLowerCase() === nft.owner.toLowerCase()) {
+      return <SellButton nft={nft} />;
+    }
+    // Freshly minted NFT up for sale
+    if (nft.owner === "0x0000000000000000000000000000000000000000") {
+      return <BuyButton nft={nft} />;
+    }
+
+    return null;
+  };
   return (
     <>
       <Navbar></Navbar>
@@ -90,8 +102,8 @@ const Item = ({ nft }) => {
         <Info>
           <Title>{nft.title}</Title>
           <Section>
-            <User>Creator: {nft.creator}</User>
-            <User>Owner: @{nft.owner}</User>
+            <User>Creator: {nft.creator.slice(0, 10)}</User>
+            <User>Owner: @{nft.owner.slice(0, 10)}</User>
           </Section>
           <Section>
             <Menu>
@@ -103,7 +115,7 @@ const Item = ({ nft }) => {
             dangerouslySetInnerHTML={{ __html: nft.description }}
           ></Description>
           <Price>{nft.price} ETH</Price>
-          <BuyButton nft={nft} />
+          <Btn />
         </Info>
       </Container>
     </>

@@ -11,6 +11,7 @@ const BuyBtn = styled.button`
   border: none;
   border-radius: 50px;
   padding: 1rem 4rem;
+  cursor: pointer;
 `;
 
 const BuyButton = ({ nft }) => {

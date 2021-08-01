@@ -15,6 +15,7 @@ const NavBtn = styled.button`
   background: var(--color-theme-green-0);
   color: var(--color-theme-bg);
   font-weight: 400;
+  cursor: pointer;
 `;
 
 const WalletButton = () => {

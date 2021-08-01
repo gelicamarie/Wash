@@ -19,7 +19,7 @@ const Art = ({ title, url, owner, price, width, height, to }) => (
           <Title>{title}</Title>
           <Price>{price} ETH</Price>
         </Container>
-        <Owner>@{owner}</Owner>
+        <Owner>@{owner.slice(0, 10)}</Owner>
       </ArtInfo>
     </Artwork>
   </Link>
