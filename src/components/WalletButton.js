@@ -4,7 +4,7 @@ import styled from "styled-components";
 import Web3 from "web3";
 import Link from "next/link";
 import { MetaMaskStateContext } from "../lib/use-metastate";
-
+import { WEB3_PROVIDER } from "../lib/query";
 const NavBtn = styled.button`
   font-family: Poppins, Arial;
   font-size: 0.95rem;
@@ -24,7 +24,7 @@ const WalletButton = () => {
 
   const onClick = async () => {
     try {
-      await connect(Web3);
+      await connect(WEB3_PROVIDER);
       setLoggedIn(true);
     } catch (error) {
       console.log(error);
@@ -33,7 +33,7 @@ const WalletButton = () => {
 
   useEffect(() => {
     setMetaState({
-      account: metaState.account[0] && metaState.account[0].slice(0, 10),
+      account: metaState.account[0] && metaState.account[0],
       isConnected: metaState.isConnected,
     });
   }, [loggedIn]);

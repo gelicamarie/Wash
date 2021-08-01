@@ -190,7 +190,7 @@ contract Marketplace is ReentrancyGuard {
         return inventory;
     }
 
-    function getArtwork(uint tokenId) public view returns (Item memory) {
+    function getArtwork(uint256 tokenId) public view returns (Item memory) {
         uint256 totalCount = _itemIds.current();
         uint256 index = 0;
 
@@ -201,6 +201,6 @@ contract Marketplace is ReentrancyGuard {
             }
             index++;
         }
-        revert('Not found');
+        revert("Not found");
     }
 }

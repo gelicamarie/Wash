@@ -1,8 +1,8 @@
-import Web3Modal from "web3modal";
-import { ethers } from "ethers";
 import styled from "styled-components";
 import { MARKET_CONTRACT_ADDRESS, NFT_CONTRACT_ADDRESS } from "../lib/config";
 import MarketPlace from "../../artifacts/contracts/Marketplace.sol/Marketplace.json";
+import { useMetamask } from "use-metamask";
+import { ethers } from "ethers";
 
 const BuyBtn = styled.button`
   font-size: 1.2rem;
@@ -14,10 +14,9 @@ const BuyBtn = styled.button`
 `;
 
 const BuyButton = ({ nft }) => {
+  const { metaState } = useMetamask();
   async function buyNft() {
-    const web3Modal = new Web3Modal(); // will look for the instance of the ethereum being injected to the web browser
-    const connection = await web3Modal.connect();
-    const provider = new ethers.providers.Web3Provider(connection);
+    const provider = new ethers.providers.Web3Provider(metaState.web3.provider);
     const signer = provider.getSigner();
 
     const contract = new ethers.Contract(
@@ -25,8 +24,6 @@ const BuyButton = ({ nft }) => {
       MarketPlace.abi,
       signer
     );
-
-    // console.log(await provider.getTransactionCount(MARKET_CONTRACT_ADDRESS));
 
     const transaction = await contract.createMarketTransaction(
       NFT_CONTRACT_ADDRESS,
