@@ -1,8 +1,8 @@
-import Web3 from "web3";
 import styled from "styled-components";
 import { MARKET_CONTRACT_ADDRESS, NFT_CONTRACT_ADDRESS } from "../lib/config";
 import MarketPlace from "../../artifacts/contracts/Marketplace.sol/Marketplace.json";
 import { useMetamask } from "use-metamask";
+import { ethers } from "ethers";
 
 const BuyBtn = styled.button`
   font-size: 1.2rem;
@@ -16,16 +16,20 @@ const BuyBtn = styled.button`
 const BuyButton = ({ nft }) => {
   const { metaState } = useMetamask();
   async function buyNft() {
-    const ethers = metaState.web3.eth;
+    const provider = new ethers.providers.Web3Provider(metaState.web3.provider);
+    const signer = provider.getSigner();
 
     const contract = new ethers.Contract(
+      MARKET_CONTRACT_ADDRESS,
       MarketPlace.abi,
-      MARKET_CONTRACT_ADDRESS
+      signer
     );
 
-    const transaction = await contract.methods
-      .createMarketTransaction(NFT_CONTRACT_ADDRESS, nft.id)
-      .send({ from: metaState.account[0] });
+    const transaction = await contract.createMarketTransaction(
+      NFT_CONTRACT_ADDRESS,
+      nft.id,
+      { value: ethers.utils.parseEther(nft.price) }
+    );
 
     await transaction.wait();
   }

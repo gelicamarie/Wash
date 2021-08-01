@@ -7,6 +7,7 @@ import { MARKET_CONTRACT_ADDRESS, NFT_CONTRACT_ADDRESS } from "../lib/config";
 
 // Setup ether clients
 // We setup once and can reuse them
+export const WEB3_PROVIDER = ethers.providers.Web3Provider;
 export const ETHER_PROVIDER = new ethers.providers.JsonRpcProvider();
 export const NFT_CONTRACT = new ethers.Contract(
   NFT_CONTRACT_ADDRESS,
@@ -81,7 +82,9 @@ export const getArtwork = async (tokenId) => {
 };
 
 export const getUserCollection = async (userId) => {
-  const inventory = await MARKETPLACE_CONTRACT.getMyCollection();
+  const inventory = await MARKETPLACE_CONTRACT.getMyCollection({
+    from: userId,
+  });
 
   const items = await Promise.all(
     inventory.map(async (i) => {

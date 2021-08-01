@@ -4,6 +4,7 @@ import Grid from "../../components/Grid/Grid";
 import { useMetamask } from "use-metamask";
 import useMetaState from "../../lib/use-metastate";
 import { getUserCollection } from "../../lib/query";
+import { useState, useEffect } from "react";
 
 const Hero = styled.div`
   display: flex;
@@ -34,8 +35,13 @@ const Button = styled.button`
   margin-bottom: 1rem;
 `;
 
-export default function User({ nfts }) {
+export default function User() {
   const { account, isConnected } = useMetaState();
+  const [nfts, setNfts] = useState([]);
+
+  useEffect(async () => {
+    setNfts(await getUserCollection(account));
+  }, [account]);
 
   if (!isConnected) {
     return (
@@ -52,7 +58,7 @@ export default function User({ nfts }) {
     <>
       <Navbar></Navbar>
       <Hero>
-        <Username>{account}</Username>
+        <Username>{account.slice(0, 10)}</Username>
         <Container>
           <Button>Collection</Button>
           <Button>Creation</Button>
@@ -61,12 +67,4 @@ export default function User({ nfts }) {
       <Grid data={nfts}></Grid>
     </>
   );
-}
-
-export async function getServerSideProps(context) {
-  const items = await getUserCollection();
-
-  return {
-    props: { nfts: items },
-  };
 }
