@@ -2,6 +2,16 @@ import styled from "styled-components";
 import Navbar from "../components/Navbar/Navbar";
 import Upload from "../components/Upload";
 import useMetaState from "../lib/use-metastate";
+import dynamic from "next/dynamic";
+import Image from "next/image";
+import { useState } from "react";
+import { useRouter } from "next/dist/client/router";
+import { SkynetClient } from "skynet-js";
+import { ethers } from "ethers";
+
+import { useMetamask } from "use-metamask";
+
+const client = new SkynetClient("https://siasky.net");
 
 const Hero = styled.div`
   display: flex;
@@ -19,7 +29,7 @@ const Subheader = styled.h3`
   font-weight: 600;
   margin: 0.5rem 0;
 `;
-const Form = styled.div``;
+
 const Container = styled.div`
   display: flex;
   flex-direction: row;
@@ -46,10 +56,11 @@ const Input = styled.input`
   outline: none;
 `;
 
-const File = styled.input`
-  background: transparent;
-  border: transparent;
+const FileInput = styled.input`
+  font-family: "Poppins", "Arial";
+  margin-top: 0.8rem;
 `;
+
 const Description = styled.textarea`
   font-family: "Poppins", "Arial";
   background: transparent;
@@ -85,8 +96,18 @@ export const Button = styled.button`
   font-weight: 300;
 `;
 
+const CreateButton = dynamic(() => import("../components/CreateButton"), {
+  ssr: false,
+});
 export default function Create() {
   const { isConnected } = useMetaState();
+
+  const [fileUrl, setFileUrl] = useState(null);
+  const [formInput, updateInput] = useState({
+    name: "",
+    price: "",
+    description: "",
+  });
 
   if (!isConnected) {
     return (
@@ -99,6 +120,17 @@ export default function Create() {
     );
   }
 
+  const onChange = async (e) => {
+    const file = e.target.files[0];
+
+    const { skylink } = await client.uploadFile(file);
+    console.log(skylink);
+    console.log(`Upload successful, url: ${skylink}`);
+    const url = "https://siasky.net/" + skylink.replace("sia:", "") + "/";
+    setFileUrl(url);
+    console.log(fileUrl);
+  };
+
   return (
     <>
       <Navbar />
@@ -107,15 +139,48 @@ export default function Create() {
         <Subheader>
           Upload your digital creations and sell them as token on Wash!
         </Subheader>
-        <Photo />
-        <input type="file" name="NFT"></input>
+        {fileUrl ? (
+          <Image
+            alt="asset"
+            className="rounded mt-4"
+            width={350}
+            height={250}
+            layout="fixed"
+            src={fileUrl}
+            loader={({ src }) => `${src}`}
+          />
+        ) : (
+          <Photo />
+        )}
+
+        <FileInput
+          type="file"
+          name="NFT"
+          accept="image/*, .jpg"
+          onChange={onChange}
+        ></FileInput>
         <Container>
-          <Input placeholder="Name"></Input>
-          <Input placeholder="Price"></Input>
+          <Input
+            placeholder="Name"
+            onChange={(e) =>
+              updateInput({ ...formInput, name: e.target.value })
+            }
+          ></Input>
+          <Input
+            placeholder="Price"
+            onChange={(e) =>
+              updateInput({ ...formInput, price: e.target.value })
+            }
+          ></Input>
         </Container>
         <Label>Description</Label>
-        <Description placeholder="Description"></Description>
-        <Button>Create NFT</Button>
+        <Description
+          placeholder="Description"
+          onChange={(e) =>
+            updateInput({ ...formInput, description: e.target.value })
+          }
+        ></Description>
+        <CreateButton fileUrl={fileUrl} formInput={formInput} />
       </Hero>
     </>
   );

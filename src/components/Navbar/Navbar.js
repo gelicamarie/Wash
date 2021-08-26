@@ -8,7 +8,6 @@ import {
   Logo,
   Menu,
   NavItem,
-  NavBtn,
   Line,
 } from "./Navbar.styles";
 import useMetaState from "../../lib/use-metastate";
