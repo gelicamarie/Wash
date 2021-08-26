@@ -1,6 +1,6 @@
 const hre = require("hardhat");
 
-const SEND_MONEY = "0x6F5ccD3e078Ba48291DfB491Cce18F348f6F5C00";
+const SEND_MONEY = "0xf39Fd6e51aad88F6F4ce6aB8827279cffFb92266";
 
 async function main() {
   const provider = new hre.ethers.providers.JsonRpcProvider();

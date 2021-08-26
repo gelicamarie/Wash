@@ -1,7 +1,6 @@
 import { useContext, useEffect, useState } from "react";
 import { useMetamask } from "use-metamask";
 import styled from "styled-components";
-import Web3 from "web3";
 import Link from "next/link";
 import { MetaMaskStateContext } from "../lib/use-metastate";
 import { WEB3_PROVIDER } from "../lib/query";
